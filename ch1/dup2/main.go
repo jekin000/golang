@@ -8,9 +8,13 @@ import(
     "bufio"
 )
 
+type NameLn struct{
+    Count int
+    Filenames map[string]bool
+}
 
 func main(){
-    counts := make(map[string]int)
+    counts := make(map[string]*NameLn)
     files := os.Args[1:]
     if len(files) == 0{
         countLines(os.Stdin,counts)
@@ -26,15 +30,53 @@ func main(){
         }
     }
 
-    for line,n := range counts{
-        fmt.Printf("%d\t%s\n",n,line)
+    for line,nameln := range counts{
+        fmt.Printf("%d\t%s%v\n",nameln.Count,line,keys(nameln.Filenames))
     }
 }
 
 
-func countLines(f *os.File, counts map[string]int){
+func in_map(fname string,filenames map[string]bool) bool{
+    _,ok := filenames[fname]
+    if ok {
+        return true
+    } else {
+        return false
+    }
+}
+
+func keys(fmap map[string]bool) []string{
+    //WARNING: use make will cause keys extend 2 times
+    //in the end, if we append a.txt,b.txt to keys, 
+    //keys will be ['','','a.txt','b.txt']
+    //if we print keys, it is  [  a.txt b.txt]
+    //keys := make([]string,len(fmap))
+
+    var keys []string
+    for k,_ := range fmap{
+        keys = append(keys,k)
+    }
+
+    return keys
+}
+
+func countLines(f *os.File, counts map[string]*NameLn){
     input := bufio.NewScanner(f)
     for input.Scan(){
-        counts[input.Text()]++
+        key := input.Text()
+        _,ok := counts[key]
+        if ok {
+            counts[key].Count++
+        } else {
+            counts[key] = new(NameLn)
+            counts[key].Count = 1
+            counts[key].Filenames = make(map[string]bool)
+        }
+
+        if in_map(f.Name(),counts[key].Filenames){
+            continue
+        } else {
+            counts[key].Filenames[f.Name()] = true
+        }
     }
 }
