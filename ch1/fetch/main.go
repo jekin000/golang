@@ -31,6 +31,7 @@ func ioCopy(resp *http.Response) {
 	}
 	//if io.Copy read b,err := ,
 	//fmt.Printf("%s",b) -> %!s(int64=4154)
+	//confirmed from book, the b is copy bytes, book call it nbytes
 }
 
 //exe 1.7-1.9
