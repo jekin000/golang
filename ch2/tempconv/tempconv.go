@@ -1,17 +1,18 @@
-//Package tempconv performs Celsius and Fahrenheit conversions.
+//Package tempconv performs Celsius and Fahrenheit , Kelvins conversions.
 package tempconv
 
 import "fmt"
 
 type Celsius float64
 type Fahrenheit float64
+type Kelvins float64
 
-const(
-    AbsoluteZeroC   Celsius = -273.15
-    FreezingC       Celsius = 0
-    BoilingC        Celsius = 100
+const (
+	AbsoluteZeroC Celsius = -273.15
+	FreezingC     Celsius = 0
+	BoilingC      Celsius = 100
 )
 
-
-func (c Celsius)    String() string {return fmt.Sprintf("%gᵒC",c)}
-func (f Fahrenheit) String() string {return fmt.Sprintf("%gᵒF",f)}
+func (c Celsius) String() string    { return fmt.Sprintf("%gᵒC", c) }
+func (f Fahrenheit) String() string { return fmt.Sprintf("%gᵒF", f) }
+func (k Kelvins) String() string    { return fmt.Sprintf("%gK", k) }
