@@ -14,6 +14,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "popcountmain %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("%d has %d's 1bits\n", t, popcount.PopCount(t))
+		fmt.Printf("direct:%d has %d's 1bits\n", t, popcount.PopCount(t))
+		fmt.Printf(" cycle:%d has %d's 1bits\n", t, popcount.PopCount_Cycle(t))
 	}
 }
