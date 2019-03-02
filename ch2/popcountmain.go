@@ -26,12 +26,20 @@ func main() {
 		t3 := time.Now()
 		count3 := popcount.PopCount_1Bit(t)
 		elapsed3 := time.Since(t3)
+
+		t4 := time.Now()
+		count4 := popcount.PopCount_Clear(t)
+		elapsed4 := time.Since(t4)
+
 		fmt.Printf("direct:%d has %d's 1bits; elapsed=%s\n", t, count1, elapsed1)
 		fmt.Printf(" cycle:%d has %d's 1bits; elapsed=%s\n", t, count2, elapsed2)
 		fmt.Printf("  1bit:%d has %d's 1bits; elapsed=%s\n", t, count3, elapsed3)
+		fmt.Printf(" clear:%d has %d's 1bits; elapsed=%s\n", t, count4, elapsed4)
+
 		//go run popcountmain.go 123
-		//direct:123 has 6's 1bits; elapsed=131ns
-		// cycle:123 has 6's 1bits; elapsed=64ns
-		//  1bit:123 has 6's 1bits; elapsed=115ns
+		//direct:8 has 1's 1bits; elapsed=113ns
+		//cycle:8 has 1's 1bits; elapsed=66ns
+		//1bit:8 has 1's 1bits; elapsed=146ns
+		//clear:8 has 1's 1bits; elapsed=40ns
 	}
 }
