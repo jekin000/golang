@@ -39,3 +39,10 @@ func PopCount_Cycle(x uint64) (n int) {
 	}
 	return
 }
+
+func PopCount_1Bit(x uint64) (n int) {
+	for i := uint(0); i < 64; i++ {
+		n += int((x >> (1 * i)) & 1)
+	}
+	return
+}
