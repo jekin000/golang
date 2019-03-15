@@ -25,6 +25,10 @@ func equal(x, y map[string]int) bool {
 	return true
 }
 
+func k(list []string) string                    { return fmt.Sprintf("%q", list) }
+func Add(m map[string]int, list []string)       { m[k(list)]++ }
+func Count(m map[string]int, list []string) int { return m[k(list)] }
+
 func Map() {
 	fmt.Println("=====4.3 map=====")
 	ages1 := make(map[string]int) //mapping from strings to ints
@@ -73,6 +77,14 @@ func Map() {
 	fmt.Println(equal(ages1, ages2))
 	fmt.Println(equal(map[string]int{"A": 0}, map[string]int{"B": 42}))
 
+	//use a slice as a map key
+	var m = make(map[string]int)
+	lkey := []string{"123", "456"}
+	Add(m, lkey)
+	Add(m, lkey)
+	Add(m, lkey)
+	Add(m, lkey)
+	fmt.Println(Count(m, lkey))
 }
 func array() {
 	fmt.Println("=====4.1 array=====")
