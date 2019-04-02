@@ -23,7 +23,12 @@ import (
 	"net/http"
 )
 
-type XKCDResp struct {
+type XKCDResult struct {
+	TotalCount int `json:"total_count"`
+	Items      []*XKCDItem
+}
+
+type XKCDItem struct {
 	Month      string `json:"month"`
 	Num        int    `json:"num"`
 	Link       string `json:"link"`
@@ -37,32 +42,36 @@ type XKCDResp struct {
 	Day        string `json:"day"`
 }
 
-func SearchSingle() {
+func searchItem(url string) (*XKCDItem, error) {
 	resp, err := http.Get("https://xkcd.com/571/info.0.json")
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
 		resp.Body.Close()
-		return
+		return nil, fmt.Errorf("search query failed: %s", resp.Status)
 	}
 
-	var result XKCDResp
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+	var item XKCDItem
+	if err := json.NewDecoder(resp.Body).Decode(&item); err != nil {
 		resp.Body.Close()
 		fmt.Println(err)
-		return
+		return nil, err
 	}
-
-	datafmt, err := json.MarshalIndent(result, "", "   ")
-	if err != nil {
-		fmt.Printf("JSON marshaling failed:%s", err)
-		return
-	}
-	fmt.Printf("%s\n", datafmt)
 
 	resp.Body.Close()
+	return &item, nil
+}
+
+func SearchSingle() (*XKCDResult, error) {
+	pitem, _ := searchItem("https://xkcd.com/571/info.0.json")
+
+	var result XKCDResult
+	result.TotalCount = 1
+	result.Items = append(result.Items, pitem)
+
+	return &result, nil
 }
 
 func main() {
